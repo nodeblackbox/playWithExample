@@ -6,4 +6,6 @@ CREATE USER 'appuser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'app2
 GRANT ALL PRIVILEGES ON myBookshop.* TO 'appuser'@'localhost';
 
 
--- CREATE TABLE users (id INT PRIMARY KEY(id) AUTO_INCREMENT,email VARCHAR(50) unsigned,password VARCHAR(64) NOT NULL,username VARCHAR(20) NOT NULL UNIQUE);
+
+CREATE TABLE users (id INT AUTO_INCREMENT, username VARCHAR(50),firstname VARCHAR(50), lastname VARCHAR(50), email VARCHAR(50), hashedPassword VARCHAR(100), PRIMARY KEY(id));
+u-- CREATE TABLE users (id INT PRIMARY KEY(id) AUTO_INCREMENT,email VARCHAR(50) unsigned,password VARCHAR(64) NOT NULL,username VARCHAR(20) NOT NULL UNIQUE);
