@@ -2,20 +2,44 @@
 <html>
   <head>
     <title>login for <%=shopName%></title>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="form.css" />
+    <script src="/extraScripts/titleSwitcher.js"></script>
+    <style>
+      html {
+        cursor: url("images/cursor.png"), auto;
+      }
+    </style>
   </head>
   <body>
-    <h1>login for <%=shopName%></h1>
-    <form method="POST" action="/loggedin">
-      <p>
-        Username:
-        <input id="username" type="username" name="username" value="username" />
-      </p>
-      <p>
-        password:
-        <input id="password" type="password" name="password" value="password" />
-      </p>
-      <input type="submit" value="login" />
-    </form>
+    <div class="login">
+      <h1>login for <%=shopName%></h1>
+      <div class="full-screen">
+        <video src="/media/parts.mp4" autoplay="" muted="" loop=""></video>
+        <form method="POST" action="/loggedin">
+          <p>
+            <input
+              id="username"
+              type="username"
+              placeholder="Username"
+              name="username"
+              value="dingdong"
+            />
+          </p>
+          <p>
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value="dingdong"
+            />
+          </p>
+          <button type="submit" class="btn btn-primary btn-block btn-large">
+            Let me in.
+          </button>
+          <input type="submit" value="login" />
+        </form>
+      </div>
+    </div>
   </body>
 </html>
