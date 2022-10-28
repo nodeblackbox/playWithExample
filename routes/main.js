@@ -30,6 +30,7 @@ module.exports = function (app, shopData) {
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
+        alert("error mysql");
         res.redirect("./");
       }
       let newData = Object.assign({}, shopData, { availableBooks: result });
@@ -55,16 +56,6 @@ module.exports = function (app, shopData) {
     console.log(req.body.email);
     console.log(req.body.password);
 
-    //-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    // username       | varchar(50)  | YES  |     | NULL    |                |
-    // | firstname      | varchar(50)  | YES  |     | NULL    |                |
-    // | lastname       | varchar(50)  | YES  |     | NULL    |                |
-    // | email          | varchar(50)  | YES  |     | NULL    |                |
-    // username;
-    // firstname;
-    // lastname;
-    // email;
-
     // ---------------------------------------------------------------------------------
     bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
       let sqlCreate =
@@ -81,6 +72,7 @@ module.exports = function (app, shopData) {
         "')";
       db.query(sqlCreate, (err, result) => {
         if (err) {
+          alert("error mysql");
           res.redirect("./");
         }
         // console.log()
@@ -114,12 +106,13 @@ module.exports = function (app, shopData) {
           hashedPassword,
           function (err, result) {
             if (err) {
-              // TODO: Handle error
+              alert("error mysql");
               console.log("error");
             } else if (result == true) {
+              alert("You are logged in");
               res.send("You are logged in");
             } else {
-              // TODO: Send message
+              alert("Password is incorrect");
               res.send("try again");
             }
           }
@@ -154,16 +147,8 @@ module.exports = function (app, shopData) {
     db.query(sqlquery, store_user, (err, result) => {
       if (err) {
         console.log(err + "error");
+        alert("error mysql query");
         res.redirect("./");
-      } else if (result == true) {
-        // res.send("you have deleted a user");
-        // console.log("you have deleted a user");
-        // //------------------------------
-        // console.log(sqlquery);
-        // console.log(store_user);
-        // console.log(result[0].username);
-        // console.log(result);
-        //------------------------------
       } else {
         // if(sqlquery == store_user){
         //     console.log("user found");
@@ -186,13 +171,13 @@ module.exports = function (app, shopData) {
       console.log("4----" + newData[0]);
 
       for (var i = 0; i < result.length; i++) {
-        console.log("-----------------", result[i].username);
+        //   console.log("-----------------", result[i].username);
         if (result[i].username == store_user) {
           matcherrr = true;
           console.log("matcherrr" + matcherrr);
         }
       }
-      if (matcherrr == true) {
+      if (matcherrr == true && result.length > 0) {
         console.log("user found");
         let delete_user_query = "DELETE FROM users WHERE username = ?;";
         db.query(delete_user_query, store_user, (err, result) => {
@@ -206,7 +191,9 @@ module.exports = function (app, shopData) {
         });
       } else {
         // res.send("Username Not Found error");
+
         console.log("Username Not Found error");
+        alert("Username Not Found error");
         res.redirect("./deleteusers");
       }
       //------------------------------

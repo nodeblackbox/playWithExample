@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <div class="login">
     <title>Delete users <%=shopName%></title>
-    <link rel="stylesheet" type="text/css" href="main.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="main.css" /> -->
+    <link rel="stylesheet" type="text/css" href="form.css" />
   </head>
   <body>
-    <h1>deleted a user<%=shopName%> Shop</h1>
+    <h1>Delete a user from <%=shopName%> Shop</h1>
     <h2>Here are the books that we sell:</h2>
     <form method="POST" action="/deletedauser">
       <p>
-        Username:
         <input id="username" type="username" name="username" value="dingdong" />
       </p>
       <input type="submit" value="Delete" />
     </form>
-    <ul>
+    <ul class="liseter">
       <% availableBooks.forEach(function(users) { %>
       <li><%= users.username%>, <%=users.email%></li>
       <% }) %>
     </ul>
+    </div>
   </body>
 </html>
