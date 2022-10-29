@@ -9,6 +9,20 @@
   justify-content: center;
 } */
 
+.fade-in {
+  animation: fadeIn 2s;
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .full-screen video {
   position: absolute;
   left: 0;
@@ -310,9 +324,9 @@ input:focus {
 }
 
 .homeBtn {
-  display: flex;
   height: auto;
   width: auto;
+  border: none;
   border-radius: 10px;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
@@ -325,12 +339,26 @@ input:focus {
   border-top: 1px solid rgba(225, 225, 225, 0.3);
   border-left: 1px solid rgba(225, 225, 225, 0.1);
   border-right: 0.5px solid rgba(225, 225, 225, 0.2);
+
   /* ---------- */
   /* padding: 100px 0; */
   /* margin-right: 200px; */
   /* border: 300px; */
 }
 
+.homeBtn:hover {
+  /* background: #53e05a; */
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.loginNav {
+  float: right;
+}
+.homeFRight {
+  float: right;
+}
+.homeFLeft {
+  float: left;
+}
 /* 
 .homeBtnHolder {
   display: flex;
@@ -353,8 +381,6 @@ input:focus {
 /* margin-right: 200px; */
 /* border: 300px; */
 
-*/
-
 /* 
 #homeBtn {
   height: auto;
@@ -372,7 +398,3 @@ input:focus {
   border-left: 2px solid rgba(225, 225, 225, 0.1);
   border-right: 1px solid rgba(225, 225, 225, 0.2);
 } */
-
-.button1 {
-  border-radius: 2px;
-}

@@ -4,46 +4,71 @@
     <title>Register for <%=shopName%></title>
     <!-- <link rel="stylesheet" type="text/css" href="main.css" /> -->
     <link rel="stylesheet" type="text/css" href="form.css" />
+    <style>
+      html {
+        cursor: url("images/cursor.png"), auto;
+      }
+    </style>
   </head>
   <body>
-    <div class="nav">
-      <div class="homeBtnHolder">
-        <button class="homeBtn">HOME</button>
+    <div class="fade-in"></div>
+    <!-- ----------------------nav section----------------------- -->
+    
+      <div class="navbar">
+        <div class="navBtnHolder">
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            HOME
+          </a>
+          <!-- </div class="loginNav"> -->
+          <a
+            onclick="location.href='/logIn'"
+            type="button"
+            class="homeBtn homeFRight"
+          >
+            LOGIN
+          </a>
+          <!-- </div> -->
+        </div>
       </div>
-    </div>
-    <!-- --------------------------------------------- -->
-    <div class="login">
-      <div id="formDiv">
-        <div class="spacerContainer">
-          <h1>Register for <%=shopName%></h1>
-          <form method="POST" action="/registered">
-            <p>
-              <input
-                id="username"
-                type="text"
-                name="username"
-                value="username"
-              />
-            </p>
-            <p>
-              <input id="first" type="text" name="first" value="first name" />
-            </p>
-            <p>
-              <input id="last" type="text" name="last" value="last name" />
-            </p>
-            <p>
-              <input id="email" type="email" name="email" value="email" />
-            </p>
-            <p>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value="password"
-              />
-            </p>
-            <input type="submit" value="Register" />
-          </form>
+      <!-- --------------------------------------------- -->
+      <div class="login">
+        <div id="formDiv">
+          <div class="spacerContainer">
+            <h1>Register for <%=shopName%></h1>
+            <form method="POST" action="/registered">
+              <p>
+                <input
+                  id="username"
+                  type="text"
+                  name="username"
+                  value="username"
+                />
+              </p>
+              <p>
+                <input id="first" type="text" name="first" value="first name" />
+              </p>
+              <p>
+                <input id="last" type="text" name="last" value="last name" />
+              </p>
+              <p>
+                <input id="email" type="email" name="email" value="email" />
+              </p>
+              <p>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value="password"
+                />
+              </p>
+              <input type="submit" value="Register" />
+              <input type="submit" value="login" />
+            </form>
+          </div>
         </div>
       </div>
     </div>
