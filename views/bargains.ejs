@@ -6,14 +6,38 @@
     <link rel="stylesheet" type="text/css" href="form.css" />
   </head>
   <body>
-    <div class="login">
-      <h1><%=shopName%> Shop</h1>
-      <h2>Here are our bargain books:</h2>
-      <ul class="liseter">
-        <% availableBooks.forEach(function(book) { %>
-        <li><%= book.name %>, £<%=book.price%></li>
-        <% }) %>
-      </ul>
+    <div class="fade-in">
+      <!-- ----------------------nav section----------------------- -->
+      <div class="navbar">
+        <div class="navBtnHolder">
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            HOME
+          </a>
+          <!-- </div class="loginNav"> -->
+          <a
+            onclick="location.href='/logIn'"
+            type="button"
+            class="homeBtn homeFRight"
+          >
+            LOGIN
+          </a>
+          <!-- </div> -->
+        </div>
+      </div>
+      <!-- --------------------------------------------- -->
+      <div class="login">
+        <h1><%=shopName%> Shop</h1>
+        <h2>Here are our bargain books:</h2>
+        <ul class="liseter">
+          <% availableBooks.forEach(function(book) { %>
+          <li><%= book.name %>, £<%=book.price%></li>
+          <% }) %>
+        </ul>
+      </div>
     </div>
   </body>
 </html>

@@ -40,6 +40,25 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
+  app.get("/listusers", function (req, res) {
+    res.render("register.ejs", shopData);
+  });
+
+  app.get("/listedusers", function (req, res) {
+    res.render("register.ejs", shopData);
+    let sqlquery = "SELECT * FROM users";
+    // query database to get all the books
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        res.redirect("./");
+      }
+      let newData = Object.assign({}, shopData, { availableBooks: result });
+      console.log(newData);
+      res.render("deleteusers.ejs", newData);
+    });
+  });
+
   app.get("/register", function (req, res) {
     res.render("register.ejs", shopData);
   });
