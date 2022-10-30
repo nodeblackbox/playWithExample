@@ -142,21 +142,19 @@ module.exports = function (app, shopData) {
   //-------------------------------------------------
   //-------------------------------------------------
   //-------------------------------------------------
-
   app.post("/loggedin", function (req, res) {
     const bcrypt = require("bcrypt");
     let sql_q = "SELECT hashedpassword FROM users WHERE username = ?";
-    let sql_sanatise = "SELECT * FROM users WHERE username = ?";
+    let sql_sanatise = "SELECT username FROM users WHERE username = ?";
     let sql_v = [req.body.username];
 
-    let matcherrr = false;
-
     db.query(sql_sanatise, sql_v, (err, result) => {
+      let matcherrr = false;
       if (err) {
         res.redirect("./");
-        console.log("proccess finshed: 1");
+        console.log("proccess finshed: 1.1");
       } else {
-        console.log("proccess finshed: 2");
+        console.log("proccess finshed: 2.1");
         for (var i = 0; i < result.length; i++) {
           //  if (result[i].username == sql_sanatise) {
           if (result[i].username == sql_v) {
@@ -164,53 +162,56 @@ module.exports = function (app, shopData) {
             console.log("matcherrr" + matcherrr);
           }
         }
-        console.log("proccess finshed: 3");
+        console.log("proccess finshed: 3.1");
       }
-      console.log("proccess finshed: 4");
-    });
+      console.log("proccess finshed: 4.1");
 
-    if (matcherrr) {
-      // hashedpassword;
-      db.query(sql_q, sql_v, (err, result) => {
-        if (err) {
-          res.redirect("./");
-        } else {
-          console.log("result: -------------------" + result);
-          for (var i = 0; i < result.length; i++) {
-            if (result[i].username == sql_v) {
-              matcherrr = true;
-              console.log("matcherrr" + matcherrr);
-            }
-          }
-          console.log("matcherrr-----------" + matcherrr);
-          // console.log(result[0].hashedpassword);
-          console.log("result: -------------------" + result);
-          var hashedPassword = result[0].hashedpassword;
-          bcrypt.compare(
-            req.body.password,
-            hashedPassword,
-            function (err, result) {
-              if (err) {
-                // alert("error mysql");
-                console.log("error");
-                res.redirect("./");
-              } else if (result == true) {
-                // alert("You are logged in");
-                res.send("You are logged in");
-              } else if (result != true) {
-                // alert("You are logged in");
-                res.send("Wrong password");
-              } else {
-                // alert("Password is incorrect");
-                res.send("try again");
+      console.log("matcherrr: ---------awdwadaw-----" + matcherrr);
+
+      //-------------------------------------------------
+      //-------------------------------------------------
+      if (matcherrr) {
+        // hashedpassword;
+        db.query(sql_q, sql_v, (err, result) => {
+          if (err) {
+            res.redirect("./");
+          } else {
+            console.log("result: -------------------" + result);
+            for (var i = 0; i < result.length; i++) {
+              if (result[i].username == sql_v) {
+                matcherrr = true;
+                console.log("matcherrr" + matcherrr);
               }
             }
-          );
-        }
-      });
-    }
-    res.redirect("./login");
-    res.send("try again");
+            console.log("matcherrr-----------" + matcherrr);
+            // console.log(result[0].hashedpassword);
+            console.log("result: -------------------" + result);
+            var hashedPassword = result[0].hashedpassword;
+            bcrypt.compare(
+              req.body.password,
+              hashedPassword,
+              function (err, result) {
+                if (err) {
+                  // alert("error mysql");
+                  console.log("error");
+                  res.redirect("./");
+                } else if (result == true) {
+                  // alert("You are logged in");
+                  res.send("You are logged in");
+                } else if (result != true) {
+                  // alert("You are logged in");
+                  res.send("Wrong password");
+                } else {
+                  // alert("Password is incorrect");
+                  res.send("try again");
+                }
+              }
+            );
+          }
+        });
+      }
+      console.log("wrong username");
+    });
   });
 
   //------------------------------------------------
