@@ -9,6 +9,8 @@ GRANT ALL PRIVILEGES ON myBookshop.* TO 'appuser'@'localhost';
 
 CREATE TABLE users (id INT AUTO_INCREMENT, username VARCHAR(50),firstname VARCHAR(50), lastname VARCHAR(50), email VARCHAR(50), hashedPassword VARCHAR(100), PRIMARY KEY(id));
 
+CREATE TABLE users (id INT AUTO_INCREMENT, username VARCHAR(50) UNIQUE,firstname VARCHAR(50), lastname VARCHAR(50), email VARCHAR(50) UNIQUE, hashedPassword VARCHAR(100), PRIMARY KEY(id));
+
 
 CREATE TABLE users (id INT AUTO_INCREMENT, username VARCHAR(20) NOT NULL UNIQUE, 
 											firstname VARCHAR(50) NOT NULL,

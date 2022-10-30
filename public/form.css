@@ -350,6 +350,8 @@ input:focus {
   /* background: #53e05a; */
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* noneed to this any more */
 .loginNav {
   float: right;
 }
@@ -359,6 +361,12 @@ input:focus {
 .homeFLeft {
   float: left;
 }
+/* ---------- */
+
+.navBtnHolder a {
+  text-transform: uppercase;
+}
+
 /* 
 .homeBtnHolder {
   display: flex;

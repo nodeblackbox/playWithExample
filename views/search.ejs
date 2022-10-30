@@ -12,16 +12,88 @@
     </style>
   </head>
   <body>
-    <div class="login">
-      <h1>Search <%=shopName%></h1>
-      <form action="/search-result" method="GET">
-        <p>What book do you want?</p>
-        <input id="search-box" type="text" name="keyword" value="Default" />
-        <input type="submit" value="Search" />
-      </form>
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search" />
+    <div class="fade-in">
+      <!-- ----------------------nav section----------------------- -->
+      <div class="navbar">
+        <div class="navBtnHolder">
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            about
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            addbook
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            bargains
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            deleteusers
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            home
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            list
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            register
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            search
+          </a>
+          <a
+            onclick="location.href='/'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            logIn
+          </a>
+          <!-- </div> -->
+        </div>
+      </div>
+      <!-- --------------------------------------------- -->
+      <div class="login">
+        <h1>Search <%=shopName%></h1>
+        <form action="/search-result" method="GET">
+          <p>What book do you want?</p>
+          <input id="search-box" type="text" name="keyword" value="Default" />
+          <input type="submit" value="Search" />
+        </form>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search" />
+      </div>
     </div>
   </body>
 </html>

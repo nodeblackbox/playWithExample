@@ -1,38 +1,46 @@
+//This is the main page where I will be querying the database, Storing and securing hash passwords  and returning information or storing information in the database.
+
+// Important bcrypt
 const bcrypt = require("bcrypt");
 
 module.exports = function (app, shopData) {
   //------------------------------------------------
   //------------------------------------------------
   // Handle our routes
+
+  // GET route for the home page
   app.get("/", function (req, res) {
     res.render("index.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the about page
   app.get("/about", function (req, res) {
     res.render("about.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the search page
   app.get("/search", function (req, res) {
+    //send the result to the search-result.ejs
     res.render("search.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route from the search page
   app.get("/search-result", function (req, res) {
     //searching in the database
     //res.send("You searched for: " + req.query.keyword);
 
     let sqlquery =
       "SELECT * FROM books WHERE name LIKE '%" + req.query.keyword + "%'"; // query database to get all the books
-
-    //------------------------------------------------
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
         // alert("error mysql");
         res.redirect("./");
       }
+      //store the result in the shopData
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log(newData);
       res.render("list.ejs", newData);
@@ -40,6 +48,7 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the listusers page
   app.get("/listusers", function (req, res) {
     let sqlquery = "SELECT * FROM users";
     // query database to get all the books
@@ -48,6 +57,7 @@ module.exports = function (app, shopData) {
       if (err) {
         res.redirect("./");
       }
+      //store the result in the shopData
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log(newData);
       res.render("listusers.ejs", newData);
@@ -56,12 +66,14 @@ module.exports = function (app, shopData) {
 
   //------------------------------------------------
   //------------------------------------------------
-
+  // GET route for the register
   app.get("/register", function (req, res) {
+    //send the result to the registered.ejs
     res.render("register.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------
+  // POST route from the register
   app.post("/registered", function (req, res) {
     // const bcrypt = require("bcrypt");
     const saltRounds = 10;
@@ -76,8 +88,10 @@ module.exports = function (app, shopData) {
 
     // ---------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------
-
+    // Hashing the password and adding 10 salt rounds
     bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
+      // Store hash in your password DB.
+      // Query all the necessary information to store data into the database
       let sqlCreate =
         "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
         req.body.username +
@@ -90,6 +104,7 @@ module.exports = function (app, shopData) {
         "' , '" +
         hashedPassword +
         "')";
+      // execute sql query
       db.query(sqlCreate, (err, result) => {
         if (err) {
           alert("error mysql");
@@ -97,6 +112,7 @@ module.exports = function (app, shopData) {
         }
         // console.log()
         // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
+        // Sending success message to user
         result +=
           "Your password is: " +
           req.body.password +
@@ -108,53 +124,31 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the login
   app.get("/login", function (req, res) {
+    //send the result to the loggedin.ejs
     res.render("login.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------
-  // app.post("/loggedin", function (req, res) {
-  //   const bcrypt = require("bcrypt");
-  //   let sql_q = "SELECT hashedpassword FROM users WHERE username = ?";
-  //   let sql_sanatise = "SELECT * FROM users WHERE username = ?";
-  //   let sql_v = [req.body.username];
-
-  //   let matcherrr = false;
-
-  //   db.query(sql_sanatise, sql_v, (err, result) => {
-  //     if (err) {
-  //       res.redirect("./");
-  //       console.log("proccess finshed: 1");
-  //     } else {
-  //       console.log("proccess finshed: 2");
-  //       for (var i = 0; i < result.length; i++) {
-  //         //  if (result[i].username == sql_sanatise) {
-  //         if (result[i].username == sql_v) {
-  //           matcherrr = true;
-  //           console.log("matcherrr" + matcherrr);
-  //         }
-  //       }
-  //       console.log("proccess finshed: 3");
-  //     }
-  //     console.log("proccess finshed: 4");
-  //   });
-
-  //-------------------------------------------------
-  //-------------------------------------------------
-  //-------------------------------------------------
+  // POST route from the login
   app.post("/loggedin", function (req, res) {
     const bcrypt = require("bcrypt");
+    // SQL query for the hash password
     let sql_q = "SELECT hashedpassword FROM users WHERE username = ?";
+    // SQL for the stage 1 sanitisation To check if the username is inside the database
     let sql_sanatise = "SELECT username FROM users WHERE username = ?";
     let sql_v = [req.body.username];
-
+    //Stage one sanitization checking if the username is in the database
     db.query(sql_sanatise, sql_v, (err, result) => {
       let matcherrr = false;
       if (err) {
         res.redirect("./");
+        console.log("error");
         console.log("proccess finshed: 1.1");
       } else {
         console.log("proccess finshed: 2.1");
+        // Checking if the username is inside the database Iterating and using JavaScript
         for (var i = 0; i < result.length; i++) {
           //  if (result[i].username == sql_sanatise) {
           if (result[i].username == sql_v) {
@@ -170,39 +164,51 @@ module.exports = function (app, shopData) {
 
       //-------------------------------------------------
       //-------------------------------------------------
+      // Stage 2 sanitisation
+      // if the username is inside the database
       if (matcherrr) {
-        // hashedpassword;
+        // hashedpassword
         db.query(sql_q, sql_v, (err, result) => {
           if (err) {
             res.redirect("./");
           } else {
-            console.log("result: -------------------" + result);
+            // Checking if a Username name is inside the database
             for (var i = 0; i < result.length; i++) {
               if (result[i].username == sql_v) {
                 matcherrr = true;
                 console.log("matcherrr" + matcherrr);
               }
             }
+            //Asynchronous function is firing after the result is returned
             console.log("matcherrr-----------" + matcherrr);
             // console.log(result[0].hashedpassword);
             console.log("result: -------------------" + result);
+            // Compare the hash password with the plain password
             var hashedPassword = result[0].hashedpassword;
             bcrypt.compare(
               req.body.password,
               hashedPassword,
               function (err, result) {
                 if (err) {
+                  // SQL query error
                   // alert("error mysql");
                   console.log("error");
                   res.redirect("./");
                 } else if (result == true) {
+                  // Passwords match
                   // alert("You are logged in");
+                  console.log("You are logged in");
                   res.send("You are logged in");
                 } else if (result != true) {
+                  // Passwords don't match
                   // alert("You are logged in");
+                  console.log("Wrong password");
                   res.send("Wrong password");
                 } else {
+                  // Extra try again statement
                   // alert("Password is incorrect");
+
+                  console.log("try again");
                   res.send("try again");
                 }
               }
@@ -210,20 +216,26 @@ module.exports = function (app, shopData) {
           }
         });
       }
-      console.log("wrong username");
+      //Entered the wrong Username
+      console.log("wrong username try agian");
+      res.send("wrong username");
     });
   });
 
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the logout
   app.get("/deleteusers", function (req, res) {
     let sqlquery = "SELECT * FROM users";
     // query database to get all the books
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
+        console.log("error");
         res.redirect("./");
       }
+      console.log(result);
+      //Converting out of put from database to an object to be passed to delete user page
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log(newData);
       res.render("deleteusers.ejs", newData);
@@ -231,10 +243,12 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
+  // POST route for the logout
   app.post("/deletedauser", function (req, res) {
     // const bcrypt = require("bcrypt");
 
     var mysql = require("mysql");
+    // SQL query for the hash password
     let sqlquery = "SELECT * FROM users";
 
     // let store_user = [req.body.username];
@@ -251,10 +265,11 @@ module.exports = function (app, shopData) {
         // }
         // console.log(result);
       }
+      // Variable used to switch between if statements  to check if the username is inside the database
       var matcherrr = false;
 
       console.log("result-----------------" + result);
-
+      // Converting the output of the query into useful information to probit the user from deleting the wrong user
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log("1----" + newData);
       console.log("2----" + result.length);
@@ -262,10 +277,8 @@ module.exports = function (app, shopData) {
       console.log("4----" + shopData);
       //   console.log("5----" + result.availableBooks);
 
-      console.log("---------------------ttttttttttt " + store_user);
-
       console.log("4----" + newData[0]);
-
+      // Checking if username is inside a database and setting matcherrr to true
       for (var i = 0; i < result.length; i++) {
         //   console.log("-----------------", result[i].username);
         if (result[i].username == store_user) {
@@ -273,12 +286,15 @@ module.exports = function (app, shopData) {
           console.log("matcherrr" + matcherrr);
         }
       }
+      // If the username is inside the database then delete the user can be queried
       if (matcherrr == true && result.length > 0) {
         console.log("user found");
+        // SQL query for the hash password
         let delete_user_query = "DELETE FROM users WHERE username = ?;";
+        // Query and delete the user
         db.query(delete_user_query, store_user, (err, result) => {
           if (err) {
-            console.log("fucking work");
+            console.log("error");
             res.redirect("./");
           } else {
             console.log("user deleted");
@@ -287,16 +303,16 @@ module.exports = function (app, shopData) {
         });
       } else {
         // res.send("Username Not Found error");
-
+        //Anything else is caught here and and this means that the the username does not match and you get redirected to the same page
         console.log("Username Not Found error");
         alert("Username Not Found error");
         res.redirect("./deleteusers");
       }
-      //------------------------------
     });
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the logout
   app.get("/list", function (req, res) {
     let sqlquery = "SELECT * FROM books"; // query database to get all the books
     // execute sql query
@@ -304,6 +320,7 @@ module.exports = function (app, shopData) {
       if (err) {
         res.redirect("./");
       }
+      //Converting out put from database to an object to be passed to delete user page
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log(newData);
       res.render("list.ejs", newData);
@@ -311,16 +328,19 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the logout
   app.get("/addbook", function (req, res) {
     res.render("addbook.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------
+  // POST route for the logout
   app.post("/bookadded", function (req, res) {
     // saving data in database
     let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)";
     // execute sql query
     let newrecord = [req.body.name, req.body.price];
+    // execute sql query with the new book record
     db.query(sqlquery, newrecord, (err, result) => {
       if (err) {
         return console.error(err.message);
@@ -335,12 +355,16 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
+  // GET route for the bargainbooks
   app.get("/bargainbooks", function (req, res) {
+    // Bargain books query list all Book star under $20
     let sqlquery = "SELECT * FROM books WHERE price < 20";
+    // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
         res.redirect("./");
       }
+      //Converting out put from database to an object to be passed to the bargain books page
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log(newData);
       res.render("bargains.ejs", newData);
