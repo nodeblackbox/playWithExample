@@ -107,7 +107,7 @@ module.exports = function (app, shopData) {
       // execute sql query
       db.query(sqlCreate, (err, result) => {
         if (err) {
-          alert("error mysql");
+          // alert("error mysql");
           res.redirect("./");
         }
         // console.log()
@@ -257,7 +257,7 @@ module.exports = function (app, shopData) {
     db.query(sqlquery, store_user, (err, result) => {
       if (err) {
         console.log(err + "error");
-        alert("error mysql query");
+        // alert("error mysql query");
         res.redirect("./");
       } else {
         // if(sqlquery == store_user){
@@ -305,7 +305,7 @@ module.exports = function (app, shopData) {
         // res.send("Username Not Found error");
         //Anything else is caught here and and this means that the the username does not match and you get redirected to the same page
         console.log("Username Not Found error");
-        alert("Username Not Found error");
+        // alert("Username Not Found error");
         res.redirect("./deleteusers");
       }
     });
