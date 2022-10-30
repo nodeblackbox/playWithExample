@@ -53,6 +53,9 @@ a:active {
   font-family: "myFirstFont";
   text-decoration: none;
 }
+h1 {
+  color: rgb(230, 27, 186);
+}
 
 .full-screen {
   width: 100%;
