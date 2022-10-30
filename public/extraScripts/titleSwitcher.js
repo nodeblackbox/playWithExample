@@ -1,4 +1,4 @@
-const book = "📘";
+const book = "📚";
 
 setInterval(() => {
   var switcher = 1;

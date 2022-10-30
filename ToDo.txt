@@ -1,0 +1,10 @@
+To Do : 
+
+Deploy to server 
+fix main.js 
+listusers fix
+and case switch authentication login : password/username 
+register :  authentication
+table on css
+error dialog box popup 
+set up my sql server on deployed server 
