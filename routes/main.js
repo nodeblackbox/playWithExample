@@ -30,7 +30,7 @@ module.exports = function (app, shopData) {
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
-        alert("error mysql");
+        // alert("error mysql");
         res.redirect("./");
       }
       let newData = Object.assign({}, shopData, { availableBooks: result });
@@ -41,7 +41,6 @@ module.exports = function (app, shopData) {
   //------------------------------------------------
   //------------------------------------------------
   app.get("/listusers", function (req, res) {
-    res.render("register.ejs", shopData);
     let sqlquery = "SELECT * FROM users";
     // query database to get all the books
     // execute sql query
@@ -49,34 +48,20 @@ module.exports = function (app, shopData) {
       if (err) {
         res.redirect("./");
       }
-      //------------------------------------------------
       let newData = Object.assign({}, shopData, { availableBooks: result });
       console.log(newData);
       res.render("listusers.ejs", newData);
     });
   });
 
-  // app.get("/listedusers", function (req, res) {
-  //   res.render("register.ejs", shopData);
-  //   let sqlquery = "SELECT * FROM users";
-  //   // query database to get all the books
-  //   // execute sql query
-  //   db.query(sqlquery, (err, result) => {
-  //     if (err) {
-  //       res.redirect("./");
-  //     }
-  //     //------------------------------------------------
-  //     let newData = Object.assign({}, shopData, { availableBooks: result });
-  //     console.log(newData);
-  //     res.render("listusers.ejs", newData);
-  //   });
-  // });
+  //------------------------------------------------
   //------------------------------------------------
 
   app.get("/register", function (req, res) {
     res.render("register.ejs", shopData);
   });
-
+  //------------------------------------------------
+  //------------------------------------------------
   app.post("/registered", function (req, res) {
     // const bcrypt = require("bcrypt");
     const saltRounds = 10;
@@ -90,6 +75,8 @@ module.exports = function (app, shopData) {
     console.log(req.body.password);
 
     // ---------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------
+
     bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
       let sqlCreate =
         "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
@@ -119,41 +106,115 @@ module.exports = function (app, shopData) {
       });
     });
   });
-
+  //------------------------------------------------
+  //------------------------------------------------
   app.get("/login", function (req, res) {
     res.render("login.ejs", shopData);
   });
+  //------------------------------------------------
+  //------------------------------------------------
+  // app.post("/loggedin", function (req, res) {
+  //   const bcrypt = require("bcrypt");
+  //   let sql_q = "SELECT hashedpassword FROM users WHERE username = ?";
+  //   let sql_sanatise = "SELECT * FROM users WHERE username = ?";
+  //   let sql_v = [req.body.username];
+
+  //   let matcherrr = false;
+
+  //   db.query(sql_sanatise, sql_v, (err, result) => {
+  //     if (err) {
+  //       res.redirect("./");
+  //       console.log("proccess finshed: 1");
+  //     } else {
+  //       console.log("proccess finshed: 2");
+  //       for (var i = 0; i < result.length; i++) {
+  //         //  if (result[i].username == sql_sanatise) {
+  //         if (result[i].username == sql_v) {
+  //           matcherrr = true;
+  //           console.log("matcherrr" + matcherrr);
+  //         }
+  //       }
+  //       console.log("proccess finshed: 3");
+  //     }
+  //     console.log("proccess finshed: 4");
+  //   });
+
+  //-------------------------------------------------
+  //-------------------------------------------------
+  //-------------------------------------------------
 
   app.post("/loggedin", function (req, res) {
     const bcrypt = require("bcrypt");
     let sql_q = "SELECT hashedpassword FROM users WHERE username = ?";
+    let sql_sanatise = "SELECT * FROM users WHERE username = ?";
     let sql_v = [req.body.username];
-    db.query(sql_q, sql_v, (err, result) => {
+
+    let matcherrr = false;
+
+    db.query(sql_sanatise, sql_v, (err, result) => {
       if (err) {
         res.redirect("./");
+        console.log("proccess finshed: 1");
       } else {
-        console.log(result[0].hashedpassword);
-        var hashedPassword = result[0].hashedpassword;
-        bcrypt.compare(
-          req.body.password,
-          hashedPassword,
-          function (err, result) {
-            if (err) {
-              alert("error mysql");
-              console.log("error");
-            } else if (result == true) {
-              alert("You are logged in");
-              res.send("You are logged in");
-            } else {
-              alert("Password is incorrect");
-              res.send("try again");
+        console.log("proccess finshed: 2");
+        for (var i = 0; i < result.length; i++) {
+          //  if (result[i].username == sql_sanatise) {
+          if (result[i].username == sql_v) {
+            matcherrr = true;
+            console.log("matcherrr" + matcherrr);
+          }
+        }
+        console.log("proccess finshed: 3");
+      }
+      console.log("proccess finshed: 4");
+    });
+
+    if (matcherrr) {
+      // hashedpassword;
+      db.query(sql_q, sql_v, (err, result) => {
+        if (err) {
+          res.redirect("./");
+        } else {
+          console.log("result: -------------------" + result);
+          for (var i = 0; i < result.length; i++) {
+            if (result[i].username == sql_v) {
+              matcherrr = true;
+              console.log("matcherrr" + matcherrr);
             }
           }
-        );
-      }
-    });
+          console.log("matcherrr-----------" + matcherrr);
+          // console.log(result[0].hashedpassword);
+          console.log("result: -------------------" + result);
+          var hashedPassword = result[0].hashedpassword;
+          bcrypt.compare(
+            req.body.password,
+            hashedPassword,
+            function (err, result) {
+              if (err) {
+                // alert("error mysql");
+                console.log("error");
+                res.redirect("./");
+              } else if (result == true) {
+                // alert("You are logged in");
+                res.send("You are logged in");
+              } else if (result != true) {
+                // alert("You are logged in");
+                res.send("Wrong password");
+              } else {
+                // alert("Password is incorrect");
+                res.send("try again");
+              }
+            }
+          );
+        }
+      });
+    }
+    res.redirect("./login");
+    res.send("try again");
   });
 
+  //------------------------------------------------
+  //------------------------------------------------
   app.get("/deleteusers", function (req, res) {
     let sqlquery = "SELECT * FROM users";
     // query database to get all the books
@@ -167,7 +228,8 @@ module.exports = function (app, shopData) {
       res.render("deleteusers.ejs", newData);
     });
   });
-
+  //------------------------------------------------
+  //------------------------------------------------
   app.post("/deletedauser", function (req, res) {
     // const bcrypt = require("bcrypt");
 
@@ -232,7 +294,8 @@ module.exports = function (app, shopData) {
       //------------------------------
     });
   });
-
+  //------------------------------------------------
+  //------------------------------------------------
   app.get("/list", function (req, res) {
     let sqlquery = "SELECT * FROM books"; // query database to get all the books
     // execute sql query
@@ -245,13 +308,13 @@ module.exports = function (app, shopData) {
       res.render("list.ejs", newData);
     });
   });
-
   //------------------------------------------------
   //------------------------------------------------
   app.get("/addbook", function (req, res) {
     res.render("addbook.ejs", shopData);
   });
-
+  //------------------------------------------------
+  //------------------------------------------------
   app.post("/bookadded", function (req, res) {
     // saving data in database
     let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)";
@@ -269,10 +332,8 @@ module.exports = function (app, shopData) {
         );
     });
   });
-
   //------------------------------------------------
   //------------------------------------------------
-
   app.get("/bargainbooks", function (req, res) {
     let sqlquery = "SELECT * FROM books WHERE price < 20";
     db.query(sqlquery, (err, result) => {
@@ -285,3 +346,5 @@ module.exports = function (app, shopData) {
     });
   });
 };
+//------------------------------------------------
+//------------------------------------------------
