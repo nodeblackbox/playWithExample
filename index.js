@@ -3,6 +3,7 @@ var express = require("express");
 var ejs = require("ejs");
 var bodyParser = require("body-parser");
 const mysql = require("mysql");
+var session = require("express-session");
 
 // Create the express application object
 const app = express();
@@ -27,6 +28,17 @@ db.connect((err) => {
   console.log("Connected to database");
 });
 global.db = db;
+
+app.use(
+  session({
+    secret: "somerandomstuff",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 600000,
+    },
+  })
+);
 
 // Set the directory where Express will pick up HTML files
 // __dirname will get the current directory

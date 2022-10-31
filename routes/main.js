@@ -4,6 +4,40 @@
 const bcrypt = require("bcrypt");
 
 module.exports = function (app, shopData) {
+  const redirectLogin = (req, res, next) => {
+    if (!req.session.userId) {
+      res.redirect("./login");
+    } else {
+      next();
+    }
+  };
+  app.get("/list", redirectLogin, function (req, res) {
+    let sqlquery = "SELECT * FROM books"; // query database to get all the books
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        res.redirect("./");
+      }
+      //Converting out put from database to an object to be passed to delete user page
+      let newData = Object.assign({}, shopData, { availableBooks: result });
+      console.log(newData);
+      res.render("list.ejs", newData);
+    });
+  });
+  // app.get("/list", function (req, res) {
+  //   let sqlquery = "SELECT * FROM books"; // query database to get all the books
+  //   // execute sql query
+  //   db.query(sqlquery, (err, result) => {
+  //     if (err) {
+  //       res.redirect("./");
+  //     }
+  //     //Converting out put from database to an object to be passed to delete user page
+  //     let newData = Object.assign({}, shopData, { availableBooks: result });
+  //     console.log(newData);
+  //     res.render("list.ejs", newData);
+  //   });
+  // });
+
   //------------------------------------------------
   //------------------------------------------------
   // Handle our routes
@@ -132,6 +166,15 @@ module.exports = function (app, shopData) {
   //------------------------------------------------
   //------------------------------------------------
   // POST route from the login
+  app.get("/logout", redirectLogin, (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.redirect("./");
+      }
+      res.send("you are now logged out. <a href=" + "./" + ">Home</a>");
+    });
+  });
+
   app.post("/loggedin", function (req, res) {
     const bcrypt = require("bcrypt");
     // SQL query for the hash password
@@ -139,6 +182,8 @@ module.exports = function (app, shopData) {
     // SQL for the stage 1 sanitisation To check if the username is inside the database
     let sql_sanatise = "SELECT username FROM users WHERE username = ?";
     let sql_v = [req.body.username];
+    req.session.userId = req.body.username;
+
     //Stage one sanitization checking if the username is in the database
     db.query(sql_sanatise, sql_v, (err, result) => {
       let matcherrr = false;
@@ -166,6 +211,7 @@ module.exports = function (app, shopData) {
       //-------------------------------------------------
       // Stage 2 sanitisation
       // if the username is inside the database
+      let wrongUsernamebool = false;
       if (matcherrr) {
         // hashedpassword
         db.query(sql_q, sql_v, (err, result) => {
@@ -190,6 +236,7 @@ module.exports = function (app, shopData) {
               hashedPassword,
               function (err, result) {
                 if (err) {
+                  wrongUsernamebool = true;
                   // SQL query error
                   // alert("error mysql");
                   console.log("error");
@@ -198,6 +245,7 @@ module.exports = function (app, shopData) {
                   // Passwords match
                   // alert("You are logged in");
                   console.log("You are logged in");
+                  res.status(200);
                   res.send("You are logged in");
                 } else if (result != true) {
                   // Passwords don't match
@@ -215,10 +263,12 @@ module.exports = function (app, shopData) {
             );
           }
         });
+        //Entered the wrong Username
+      } else {
+        console.log("wrong username try agian");
+        res.status(200);
+        res.send("wrong username");
       }
-      //Entered the wrong Username
-      console.log("wrong username try agian");
-      res.send("wrong username");
     });
   });
 
@@ -313,19 +363,21 @@ module.exports = function (app, shopData) {
   //------------------------------------------------
   //------------------------------------------------
   // GET route for the logout
-  app.get("/list", function (req, res) {
-    let sqlquery = "SELECT * FROM books"; // query database to get all the books
-    // execute sql query
-    db.query(sqlquery, (err, result) => {
-      if (err) {
-        res.redirect("./");
-      }
-      //Converting out put from database to an object to be passed to delete user page
-      let newData = Object.assign({}, shopData, { availableBooks: result });
-      console.log(newData);
-      res.render("list.ejs", newData);
-    });
-  });
+
+  // app.get("/list", function (req, res) {
+  //   let sqlquery = "SELECT * FROM books"; // query database to get all the books
+  //   // execute sql query
+  //   db.query(sqlquery, (err, result) => {
+  //     if (err) {
+  //       res.redirect("./");
+  //     }
+  //     //Converting out put from database to an object to be passed to delete user page
+  //     let newData = Object.assign({}, shopData, { availableBooks: result });
+  //     console.log(newData);
+  //     res.render("list.ejs", newData);
+  //   });
+  // });
+
   //------------------------------------------------
   //------------------------------------------------
   // GET route for the logout
