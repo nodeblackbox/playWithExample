@@ -127,7 +127,7 @@ module.exports = function (app, shopData) {
   // GET route for the login
   app.get("/login", function (req, res) {
     //send the result to the loggedin.ejs
-    res.render("login.ejs", shopData);
+    res.render("logIn.ejs", shopData);
   });
   //------------------------------------------------
   //------------------------------------------------

@@ -82,35 +82,39 @@
         </div>
       </div>
       <!-- --------------------------------------------- -->
-      <div class="login">
-        <h1>login for <%=shopName%></h1>
-        <div class="full-screen">
-          <form method="POST" action="/loggedin">
-            <p>
-              <input
-                id="username"
-                type="username"
-                placeholder="Username"
-                name="username"
-                value="dingdong"
-              />
-            </p>
-            <p>
-              <input
-                id="password"
-                type="password"
-                placeholder="Password"
-                name="password"
-                value="dingdong"
-              />
-            </p>
-            <button type="submit" class="btn btn-primary btn-block btn-large">
-              Let me in.
-            </button>
-            <!-- <input type="submit" value="login" /> -->
-          </form>
-        </div>
+      <!-- <div class="login"> -->
+      <h1>login for <%=shopName%></h1>
+      <div class="full-screen">
+        <form method="POST" action="/loggedin">
+          <p>
+            <input
+              id="username"
+              type="username"
+              placeholder="Username"
+              name="username"
+              value="dingdong"
+            />
+          </p>
+          <p>
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value="dingdong"
+            />
+          </p>
+          <button
+            type="submit"
+            class="btn btn-primary btn-block btn-large"
+            value="logIn"
+          >
+            Let me in.
+          </button>
+          <!-- <input type="submit" value="login" /> -->
+        </form>
       </div>
+      <!-- </div> -->
     </div>
   </body>
 </html>

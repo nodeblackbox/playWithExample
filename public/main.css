@@ -96,7 +96,7 @@ h1 {
 
 @font-face {
   font-family: myFirstFont;
-  src: url(/Fonts/akirafo.otf);
+  src: url(./Fonts/akirafo.otf);
 }
 
 div {
