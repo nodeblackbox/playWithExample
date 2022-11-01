@@ -2,6 +2,7 @@
 
 // Important bcrypt
 const bcrypt = require("bcrypt");
+const { check, validationResult } = require("express-validator");
 
 module.exports = function (app, shopData) {
   const redirectLogin = (req, res, next) => {
@@ -107,55 +108,162 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
-  // POST route from the register
-  app.post("/registered", function (req, res) {
-    // const bcrypt = require("bcrypt");
-    const saltRounds = 10;
-    const plainPassword = req.body.password;
-    const hashedPassword = "";
+  app.post("/registered", [check("email").isEmail()], function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.redirect("./register");
+    } else {
+      // REST OF YOUR CODE
+      const saltRounds = 10;
+      const plainPassword = req.body.password;
+      const hashedPassword = "";
 
-    console.log(req.body.username);
-    console.log(req.body.first);
-    console.log(req.body.last);
-    console.log(req.body.email);
-    console.log(req.body.password);
+      console.log(req.body.username);
+      console.log(req.body.first);
+      console.log(req.body.last);
+      console.log(req.body.email);
+      console.log(req.body.password);
 
-    // ---------------------------------------------------------------------------------
-    // ---------------------------------------------------------------------------------
-    // Hashing the password and adding 10 salt rounds
-    bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
-      // Store hash in your password DB.
-      // Query all the necessary information to store data into the database
-      let sqlCreate =
-        "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
-        req.body.username +
-        "' , '" +
-        req.body.first +
-        "' , '" +
-        req.body.last +
-        "' , '" +
-        req.body.email +
-        "' , '" +
-        hashedPassword +
-        "')";
-      // execute sql query
-      db.query(sqlCreate, (err, result) => {
-        if (err) {
-          // alert("error mysql");
-          res.redirect("./");
-        }
-        // console.log()
-        // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
-        // Sending success message to user
-        result +=
-          "Your password is: " +
-          req.body.password +
-          " and your hashed password is: " +
-          hashedPassword;
-        res.send(result);
+      // ---------------------------------------------------------------------------------
+      // ---------------------------------------------------------------------------------
+      // Hashing the password and adding 10 salt rounds
+      bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
+        // Store hash in your password DB.
+        // Query all the necessary information to store data into the database
+        let sqlCreate =
+          "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
+          req.body.username +
+          "' , '" +
+          req.body.first +
+          "' , '" +
+          req.body.last +
+          "' , '" +
+          req.body.email +
+          "' , '" +
+          hashedPassword +
+          "')";
+        // execute sql query
+        db.query(sqlCreate, (err, result) => {
+          if (err) {
+            // alert("error mysql");
+            res.redirect("./");
+          }
+          // console.log()
+          // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
+          // Sending success message to user
+          result +=
+            "Your password is: " +
+            req.body.password +
+            " and your hashed password is: " +
+            hashedPassword;
+          res.send(result);
+        });
       });
-    });
+    }
   });
+  //------------------------------------------------
+  //------------------------------------------------
+
+  // app.post("/registered", function (req, res) {
+  //   // const bcrypt = require("bcrypt");
+  //   const saltRounds = 10;
+  //   const plainPassword = req.body.password;
+  //   const hashedPassword = "";
+
+  //   console.log(req.body.username);
+  //   console.log(req.body.first);
+  //   console.log(req.body.last);
+  //   console.log(req.body.email);
+  //   console.log(req.body.password);
+
+  //   // ---------------------------------------------------------------------------------
+  //   // ---------------------------------------------------------------------------------
+  //   // Hashing the password and adding 10 salt rounds
+  //   bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
+  //     // Store hash in your password DB.
+  //     // Query all the necessary information to store data into the database
+  //     let sqlCreate =
+  //       "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
+  //       req.body.username +
+  //       "' , '" +
+  //       req.body.first +
+  //       "' , '" +
+  //       req.body.last +
+  //       "' , '" +
+  //       req.body.email +
+  //       "' , '" +
+  //       hashedPassword +
+  //       "')";
+  //     // execute sql query
+  //     db.query(sqlCreate, (err, result) => {
+  //       if (err) {
+  //         // alert("error mysql");
+  //         res.redirect("./");
+  //       }
+  //       // console.log()
+  //       // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
+  //       // Sending success message to user
+  //       result +=
+  //         "Your password is: " +
+  //         req.body.password +
+  //         " and your hashed password is: " +
+  //         hashedPassword;
+  //       res.send(result);
+  //     });
+  //   });
+  // });
+
+  //------------------------------------------------
+  //------------------------------------------------
+  // POST route from the register
+  // app.post("/registered", function (req, res) {
+  //   // const bcrypt = require("bcrypt");
+  //   const saltRounds = 10;
+  //   const plainPassword = req.body.password;
+  //   const hashedPassword = "";
+
+  //   console.log(req.body.username);
+  //   console.log(req.body.first);
+  //   console.log(req.body.last);
+  //   console.log(req.body.email);
+  //   console.log(req.body.password);
+
+  //   // ---------------------------------------------------------------------------------
+  //   // ---------------------------------------------------------------------------------
+  //   // Hashing the password and adding 10 salt rounds
+  //   bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
+  //     // Store hash in your password DB.
+  //     // Query all the necessary information to store data into the database
+  //     let sqlCreate =
+  //       "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
+  //       req.body.username +
+  //       "' , '" +
+  //       req.body.first +
+  //       "' , '" +
+  //       req.body.last +
+  //       "' , '" +
+  //       req.body.email +
+  //       "' , '" +
+  //       hashedPassword +
+  //       "')";
+  //     // execute sql query
+  //     db.query(sqlCreate, (err, result) => {
+  //       if (err) {
+  //         // alert("error mysql");
+  //         res.redirect("./");
+  //       }
+  //       // console.log()
+  //       // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
+  //       // Sending success message to user
+  //       result +=
+  //         "Your password is: " +
+  //         req.body.password +
+  //         " and your hashed password is: " +
+  //         hashedPassword;
+  //       res.send(result);
+  //     });
+  //   });
+  // });
   //------------------------------------------------
   //------------------------------------------------
   // GET route for the login
