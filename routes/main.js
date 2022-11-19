@@ -12,19 +12,49 @@ module.exports = function (app, shopData) {
       next();
     }
   };
+  // change the shit out of this
+  function alert(msg, url) {
+    //pass message and url to redirect
+    let alert =
+      "<script>" +
+      "alert('" +
+      msg +
+      "'); " + //message
+      // "setTimeout('', 5000); "+ //delay
+      "window.location.href = '/" +
+      url +
+      "';</script>"; //local developerment
+    return alert; //return alert message
+  }
+
   app.get("/list", redirectLogin, function (req, res) {
-    let sqlquery = "SELECT * FROM books"; // query database to get all the books
-    // execute sql query
-    db.query(sqlquery, (err, result) => {
-      if (err) {
-        res.redirect("./");
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+      let msg = "";
+      for (var i = 0; i < errors.array().length; i++) {
+        msg += errors.array()[i].msg + "\\n";
+        // errors[i]
       }
-      //Converting out put from database to an object to be passed to delete user page
-      let newData = Object.assign({}, shopData, { availableBooks: result });
-      console.log(newData);
-      res.render("list.ejs", newData);
-    });
+      //add check on all
+      console.log(msg);
+      res.send(alert(msg, "login"));
+      // res.redirect("./register");
+    } else {
+      let sqlquery = "SELECT * FROM books"; // query database to get all the books
+      // execute sql query
+      db.query(sqlquery, (err, result) => {
+        if (err) {
+          res.redirect("./");
+        }
+        //Converting out put from database to an object to be passed to delete user page
+        let newData = Object.assign({}, shopData, { availableBooks: result });
+        console.log(newData);
+        res.render("list.ejs", newData);
+      });
+    }
   });
+
   // app.get("/list", function (req, res) {
   //   let sqlquery = "SELECT * FROM books"; // query database to get all the books
   //   // execute sql query
@@ -62,25 +92,46 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
-  // GET route from the search page
-  app.get("/search-result", function (req, res) {
-    //searching in the database
-    //res.send("You searched for: " + req.query.keyword);
 
-    let sqlquery =
-      "SELECT * FROM books WHERE name LIKE '%" + req.query.keyword + "%'"; // query database to get all the books
-    // execute sql query
-    db.query(sqlquery, (err, result) => {
-      if (err) {
-        // alert("error mysql");
-        res.redirect("./");
+  //;
+  // GET route from the search page
+  app.get(
+    "/search-result",
+    [check("email").notEmpty().withMessage("You must type a valid email")],
+    function (req, res) {
+      //searching in the database
+      //res.send("You searched for: " + req.query.keyword);
+      const errors = validationResult(req);
+      console.log(errors);
+      if (!errors.isEmpty()) {
+        let msg = "";
+        for (var i = 0; i < errors.array().length; i++) {
+          msg += errors.array()[i].msg + "\\n";
+          // errors[i]
+        }
+        //add check on all
+        console.log(msg);
+        res.send(alert(msg, "search"));
+        // res.redirect("./register");
+      } else {
+        let sqlquery =
+          "SELECT * FROM books WHERE name LIKE '%" + req.query.keyword + "%'"; // query database to get all the books
+        // execute sql query
+        db.query(sqlquery, (err, result) => {
+          if (err) {
+            // alert("error mysql");
+            res.redirect("./");
+          }
+          //store the result in the shopData
+          let newData = Object.assign({}, shopData, {
+            availableBooks: result,
+          });
+          console.log(newData);
+          res.render("list.ejs", newData);
+        });
       }
-      //store the result in the shopData
-      let newData = Object.assign({}, shopData, { availableBooks: result });
-      console.log(newData);
-      res.render("list.ejs", newData);
-    });
-  });
+    }
+  );
   //------------------------------------------------
   //------------------------------------------------
   // GET route for the listusers page
@@ -108,59 +159,114 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
-  app.post("/registered", [check("email").isEmail()], function (req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.redirect("./register");
-    } else {
-      // REST OF YOUR CODE
-      const saltRounds = 10;
-      const plainPassword = req.body.password;
-      const hashedPassword = "";
+  // function bingbong(msg,url){
+  //   let bing = "<script>" + "alert('"+ msg +"'); "+
+  //             "setTimeout('', 6000);"+
 
-      console.log(req.body.username);
-      console.log(req.body.first);
-      console.log(req.body.last);
-      console.log(req.body.email);
-      console.log(req.body.password);
+  //             "windows.location.href = 'http://localhost:8000/" + url + "';</script>";
+  //             console.log(bing)
+  //   return bing;
 
-      // ---------------------------------------------------------------------------------
-      // ---------------------------------------------------------------------------------
-      // Hashing the password and adding 10 salt rounds
-      bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
-        // Store hash in your password DB.
-        // Query all the necessary information to store data into the database
-        let sqlCreate =
-          "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
-          req.body.username +
-          "' , '" +
-          req.body.first +
-          "' , '" +
-          req.body.last +
-          "' , '" +
-          req.body.email +
-          "' , '" +
-          hashedPassword +
-          "')";
-        // execute sql query
-        db.query(sqlCreate, (err, result) => {
-          if (err) {
-            // alert("error mysql");
-            res.redirect("./");
-          }
-          // console.log()
-          // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
-          // Sending success message to user
-          result +=
-            "Your password is: " +
-            req.body.password +
-            " and your hashed password is: " +
-            hashedPassword;
-          res.send(result);
+  // }
+
+  //add valedator to other pages
+
+  // username
+  // first
+  // last
+  // email
+  // password
+
+  //------------------------------------------------------
+  // const errors = validationResult(req);
+  //     console.log(errors)
+  //     if (!errors.isEmpty()) {
+  //       let msg = "";
+  //       for(var i = 0;i< errors.array().length;i++){
+  //        msg += errors.array()[i].msg + '\\n'
+  //         // errors[i]
+
+  //       }
+  //       //add check on all
+  //       console.log(msg)
+  //       res.send(alert(msg,"login"))
+  //       // res.redirect("./register");
+  //     }
+  //------------------------------------------------------
+
+  //TODO CHANGE REDIREC For LOG IN
+
+  app.post(
+    "/registered",
+    [check("email").isEmail().withMessage("You must type a valid email")],
+    [check("password").isLength({ min: 8 }).withMessage("1")],
+    [check("username").isLength({ min: 6 }).withMessage("1")],
+    [check("first").isLength({ min: 2 }).withMessage("1")],
+    [check("last").isLength({ min: 2 }).withMessage("1")],
+
+    function (req, res) {
+      const errors = validationResult(req);
+      console.log(errors);
+      if (!errors.isEmpty()) {
+        let msg = "";
+        for (var i = 0; i < errors.array().length; i++) {
+          msg += errors.array()[i].msg + "\\n";
+          // errors[i]
+        }
+        //add check on all
+        console.log(msg);
+        res.send(alert(msg, "register"));
+        // res.redirect("./register");
+      } else {
+        // REST OF YOUR CODE
+        const saltRounds = 10;
+        const plainPassword = req.body.password;
+        const hashedPassword = "";
+
+        console.log(req.body.username);
+        console.log(req.body.first);
+        console.log(req.body.last);
+        console.log(req.body.email);
+        console.log(req.body.password);
+
+        // ---------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------
+        // Hashing the password and adding 10 salt rounds
+        bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
+          // Store hash in your password DB.
+          // Query all the necessary information to store data into the database
+          let sqlCreate =
+            "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
+            req.body.username +
+            "' , '" +
+            req.body.first +
+            "' , '" +
+            req.body.last +
+            "' , '" +
+            req.body.email +
+            "' , '" +
+            hashedPassword +
+            "')";
+          // execute sql query
+          db.query(sqlCreate, (err, result) => {
+            if (err) {
+              // alert("error mysql");
+              res.redirect("./");
+            }
+            // console.log()
+            // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
+            // Sending success message to user
+            result +=
+              "Your password is: " +
+              req.body.password +
+              " and your hashed password is: " +
+              hashedPassword;
+            res.send(result);
+          });
         });
-      });
+      }
     }
-  });
+  );
   //------------------------------------------------
   //------------------------------------------------
 
@@ -271,6 +377,7 @@ module.exports = function (app, shopData) {
     //send the result to the loggedin.ejs
     res.render("logIn.ejs", shopData);
   });
+
   //------------------------------------------------
   //------------------------------------------------
   // POST route from the login
