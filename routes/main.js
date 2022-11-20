@@ -328,15 +328,15 @@ module.exports = function (app, shopData) {
           // Query all the necessary information to store data into the database
           let sqlCreate =
             "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
-            sanitize_username +
+            db.escape(sanitize_username) +
             "' , '" +
-            sanitize_first +
+            db.escape(sanitize_first) +
             "' , '" +
-            sanitize_last +
+            db.escape(sanitize_last) +
             "' , '" +
-            sanitize_email +
+            db.escape(sanitize_email) +
             "' , '" +
-            hashedPassword +
+            db.escape(hashedPassword) +
             "')";
           // execute sql query
           db.query(sqlCreate, (err, result) => {
