@@ -533,7 +533,7 @@ module.exports = function (app, shopData) {
         }
         console.log("proccess finshed: 4.1");
 
-        console.log("matcherrr: ---------awdwadaw-----" + matcherrr);
+        console.log("matcherrr: --------------" + matcherrr);
 
         //-------------------------------------------------
         //-------------------------------------------------
