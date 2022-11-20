@@ -15,7 +15,6 @@ module.exports = function (app, shopData) {
       //add check on all
       console.log(msg);
       res.send(alert(msg, "login"));
-      // res.redirect("./register");
     } else {
       if (!req.session.userId) {
         res.redirect("./login");
@@ -49,8 +48,7 @@ module.exports = function (app, shopData) {
   app.get("/testPage", function (req, res) {
     res.render("testPage.ejs", shopData);
   });
-
-  app.get("/list", redirectLogin, function (req, res) {
+  app.get("/testPage", redirectLogin, function (req, res) {
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {
@@ -61,7 +59,34 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "testPage"));
+      // res.redirect("./register");
+    } else {
+      let sqlquery = "SELECT * FROM books"; // query database to get all the books
+      // execute sql query
+      db.query(sqlquery, (err, result) => {
+        if (err) {
+          res.redirect("./");
+        }
+        //Converting out put from database to an object to be passed to delete user page
+        let newData = Object.assign({}, shopData, { availableBooks: result });
+        console.log(newData);
+        res.render("testPage.ejs", newData);
+      });
+    }
+  });
+
+  app.get("/list", redirectLogin, function (req, res) {
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+      let msg = "";
+      for (var i = 0; i < errors.array().length; i++) {
+        msg += errors.array()[i].msg + "\\n";
+      }
+      //add check on all
+      console.log(msg);
+      res.send(alert(msg, "list"));
       // res.redirect("./register");
     } else {
       let sqlquery = "SELECT * FROM books"; // query database to get all the books
@@ -174,7 +199,7 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "listusers"));
       // res.redirect("./register");
     } else {
       let sqlquery = "SELECT * FROM users";
@@ -265,6 +290,18 @@ module.exports = function (app, shopData) {
     function (req, res) {
       const errors = validationResult(req);
       console.log(errors);
+
+      sanitize_username = req.sanitize(req.body.username);
+      sanitize_first = req.sanitize(req.body.first);
+      sanitize_last = req.sanitize(req.body.last);
+      sanitize_email = req.sanitize(req.body.email);
+      sanitize_password = req.sanitize(req.body.password);
+      console.log(sanitize_username);
+      console.log(sanitize_first);
+      console.log(sanitize_last);
+      console.log(sanitize_email);
+      console.log(sanitize_password);
+
       if (!errors.isEmpty()) {
         let msg = "";
         for (var i = 0; i < errors.array().length; i++) {
@@ -276,16 +313,12 @@ module.exports = function (app, shopData) {
         res.send(alert(msg, "register"));
         // res.redirect("./register");
       } else {
+        // escape(input)
         // REST OF YOUR CODE
-        const saltRounds = 10;
-        const plainPassword = req.body.password;
-        const hashedPassword = "";
 
-        console.log(req.body.username);
-        console.log(req.body.first);
-        console.log(req.body.last);
-        console.log(req.body.email);
-        console.log(req.body.password);
+        const saltRounds = 10;
+        const plainPassword = sanitize_password;
+        const hashedPassword = "";
 
         // ---------------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------
@@ -295,13 +328,13 @@ module.exports = function (app, shopData) {
           // Query all the necessary information to store data into the database
           let sqlCreate =
             "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
-            req.body.username +
+            sanitize_username +
             "' , '" +
-            req.body.first +
+            sanitize_first +
             "' , '" +
-            req.body.last +
+            sanitize_last +
             "' , '" +
-            req.body.email +
+            sanitize_email +
             "' , '" +
             hashedPassword +
             "')";
@@ -316,7 +349,7 @@ module.exports = function (app, shopData) {
             // Sending success message to user
             result +=
               "Your password is: " +
-              req.body.password +
+              sanitize_password +
               " and your hashed password is: " +
               hashedPassword;
             res.send(result);
@@ -452,6 +485,8 @@ module.exports = function (app, shopData) {
   });
 
   //@@@@@@@@@@@@@------TODO
+  //add access to the login page
+  //add a admin log in page
   //-----------------------------------------------//
   //-----------------------------------------------//
 
@@ -466,7 +501,7 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "logout"));
       // res.redirect("./register");
     } else {
       const bcrypt = require("bcrypt");
@@ -581,7 +616,7 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "deleteusers"));
       // res.redirect("./register");
     } else {
       let sqlquery = "SELECT * FROM users";
@@ -616,7 +651,7 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "deleteusers"));
       // res.redirect("./register");
     } else {
       // const bcrypt = require("bcrypt");
@@ -728,7 +763,7 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "addbook"));
       // res.redirect("./register");
     } else {
       // saving data in database
@@ -749,6 +784,7 @@ module.exports = function (app, shopData) {
       });
     }
   });
+
   //@@@@@@@@@@@@@------TODO
   //-----------------------------------------------//
   //-----------------------------------------------//
@@ -764,7 +800,7 @@ module.exports = function (app, shopData) {
       }
       //add check on all
       console.log(msg);
-      res.send(alert(msg, "login"));
+      res.send(alert(msg, "bargainbooks"));
       // res.redirect("./register");
     } else {
       // Bargain books query list all Book star under $20
@@ -782,5 +818,6 @@ module.exports = function (app, shopData) {
     }
   });
 };
+
 //------------------------------------------------
 //------------------------------------------------

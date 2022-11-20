@@ -4,6 +4,7 @@ var ejs = require("ejs");
 var bodyParser = require("body-parser");
 const mysql = require("mysql");
 var session = require("express-session");
+const expressSanitizer = require("express-sanitizer");
 
 // Create the express application object
 const app = express();
@@ -23,7 +24,7 @@ const db = mysql.createConnection({
 // Connect to the database
 db.connect((err) => {
   if (err) {
-    console.log(err)
+    console.log(err);
     throw err;
   }
   console.log("Connected to database");
@@ -38,8 +39,10 @@ app.use(
     cookie: {
       expires: 600000,
     },
-  })
+  }),
+  expressSanitizer()
 );
+// app.use(expressSanitizer());
 
 // Set the directory where Express will pick up HTML files
 // __dirname will get the current directory
