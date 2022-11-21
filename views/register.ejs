@@ -93,28 +93,44 @@
                   type="text"
                   name="username"
                   value="username"
+                  minlength="5"
+                  maxlength="20"
+                  pattern="[a-z]{1,9}"
+                  required="required" 
                 />
               </p>
               <p>
-                <input id="first" type="text" name="first" value="first name" />
+                <input id="first" type="text" name="first" value="first name" required="required" />
               </p>
               <p>
                 <input id="last" type="text" name="last" value="last name" />
               </p>
               <p>
              
-                <input id="email" type="email" name="email" value="email" />
+                <input id="email" type="email" name="email" value="email" minlength="5" maxlength="50" name="email" required="required" />
               </p>
               <p>
                 <input
                   id="password"
                   type="password"
                   name="password"
-                  value="password"
+                  value="password 
+                  required="required
                 />
               </p>
+              <script>
+              const email = document.getElementById("mail");
+                email.addEventListener("input", (event) => {
+                    if (email.validity.typeMismatch) {
+                      email.setCustomValidity("I am expecting an e-mail address!");
+                      email.reportValidity();
+                    } else {
+                      email.setCustomValidity("");
+                    }
+                });
+              </script>
               <input type="submit" value="Register" />
-              <input type="submit" value="logIn" />
+              <!-- <input type="submit" value="logIn" /> -->
             </form>
           </div>
         </div>

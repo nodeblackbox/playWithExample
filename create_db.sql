@@ -6,6 +6,8 @@ CREATE USER 'appuser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'app2
 GRANT ALL PRIVILEGES ON myBookshop.* TO 'appuser'@'localhost';
 
 
+CREATE USER 'sammy'@'localhost' IDENTIFIED WITH mysql_native_password BY 'sammy123';
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'sammy'@'localhost' WITH GRANT OPTION;
 
 CREATE TABLE users (id INT AUTO_INCREMENT, username VARCHAR(50),firstname VARCHAR(50), lastname VARCHAR(50), email VARCHAR(50), hashedPassword VARCHAR(100), PRIMARY KEY(id));
 

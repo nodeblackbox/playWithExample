@@ -87,8 +87,23 @@
         <h1>Search <%=shopName%></h1>
         <form action="/search-result" method="GET">
           <p>What book do you want?</p>
-          <input id="search-box" type="text" name="keyword" value="Default" />
-          <input type="submit" value="Search" />
+          <input
+            id="search-box"
+            type="text"
+            name="keyword"
+            value="Search"
+            minlength="1"
+            maxlength="20"
+            name="search"
+          />
+          <input
+            type="submit"
+            value="Search"
+            minlength="1"
+            maxlength="20"
+            name="search"
+            pattern="[a-z]{4,8}"
+          />
         </form>
       </div>
       <div class="search-bar">
