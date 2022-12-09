@@ -5,6 +5,11 @@ var bodyParser = require("body-parser");
 const mysql = require("mysql");
 var session = require("express-session");
 const expressSanitizer = require("express-sanitizer");
+require("dotenv").config();
+
+const dbUsername = process.env.DB_USERNAME;
+const dbPasswords = process.env.DB_PASSWORD;
+const WetherAPIkey = process.env.WetherAPI_KEY;
 
 // Create the express application object
 const app = express();
@@ -17,10 +22,11 @@ app.use(express.static(__dirname + "/public"));
 // Define the database connection
 const db = mysql.createConnection({
   host: "localhost",
-  user: "sammy",
-  password: "sammy123",
+  user: dbUsername,
+  password: dbPasswords,
   database: "myBookshop",
 });
+
 // Connect to the database
 db.connect((err) => {
   if (err) {
@@ -58,9 +64,15 @@ app.engine("html", ejs.renderFile);
 app.use("/images", express.static("images"));
 // Define our data
 var shopData = { shopName: "Bertie's Books" };
+// console.log(WetherAPIkey);
+// console.log(dbUsername);
+// console.log(dbPasswords);
+
+var Wapikey = { Wetherapikey: WetherAPIkey };
 
 // Requires the main.js file inside the routes folder passing in the Express app and data as arguments.  All the routes will go in this file
 require("./routes/main")(app, shopData);
+require("./routes/main")(app, Wapikey);
 
 // Start the web app listening
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

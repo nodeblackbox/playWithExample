@@ -76,6 +76,13 @@
           >
             logIn
           </a>
+          <a
+            onclick="location.href='./tvshows'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            tvshows
+          </a>
           <!-- </div> -->
         </div>
       </div>
@@ -84,7 +91,9 @@
         <h1><%=shopName%> Shop</h1>
         <h2>Here are the books that we sell:</h2>
         <ul class="liseter">
-          <% availableBooks.forEach(function(book) { %><li><%= book.name %>, £<%=book.price%></li><% }) %>
+          <% availableBooks.forEach(function(book) { %>
+          <li><%= book.name %>, £<%=book.price%></li>
+          <% }) %>
         </ul>
       </div>
     </div>

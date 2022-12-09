@@ -1,0 +1,23 @@
+<!-- The page which gets the TV Show result -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>TV Shows</title>
+        <!-- Linking my CSS -->
+        <link rel="stylesheet"  type="text/css" href="main.css" />
+    </head>
+    <body>
+        <h1> Tv Shows</h1>
+        <%for(let i = 0; i<showsInfo.length; i++) {%>
+            <h2>Show name: <%=showsInfo[i].show.name%></h2>
+            <p>Type: <%=showsInfo[i].show.type%></p>
+            <p>Genre: <%=showsInfo[i].show.genres%></p>
+            <p>Premiere: <%=showsInfo[i].show.premiered%></p>
+            <p>Language: <%=showsInfo[i].show.language%></p>
+            <p>Status: <%=showsInfo[i].show.status%></p>
+            <p>Score: <%=showsInfo[i].score%></p>
+            <p>Url: <a href="<%=showsInfo[i].show.url%>" target="_blank"><%=showsInfo[i].show.url%></a></p>
+        <%}%>
+    </body>
+    <p><a href="/">Home page</a></p>
+</html>

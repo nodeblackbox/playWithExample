@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About <%=shopName%></title>
+    <!-- <link rel="stylesheet"  type="text/css" href="main.css" /> -->
+    <link rel="stylesheet" type="text/css" href="form.css" />
+    <style>
+      html {
+        cursor: url("images/cursor.png"), auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fade-in">
+      <!-- ----------------------nav section----------------------- -->
+
+      <div class="navbar">
+        <div class="navBtnHolder">
+          <a
+            onclick="location.href='./about'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            about
+          </a>
+          <a
+            onclick="location.href='./addbook'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            addbook
+          </a>
+          <a
+            onclick="location.href='./bargainbooks'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            bargains
+          </a>
+          <a
+            onclick="location.href='./deleteusers'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            deleteusers
+          </a>
+          <a
+            onclick="location.href='./'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            home
+          </a>
+          <a
+            onclick="location.href='./list'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            list
+          </a>
+          <a
+            onclick="location.href='./register'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            register
+          </a>
+          <a
+            onclick="location.href='./search'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            search
+          </a>
+          <a
+            onclick="location.href='./logIn'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            logIn
+          </a>
+          <a
+            onclick="location.href='./tvshows'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            tvshows
+          </a>
+          <!-- </div> -->
+        </div>
+      </div>
+      <!-- --------------------------------------------- -->
+      <div class="login">
+        <div id="formDiv">
+          <div class="spacerContainer">
+            <div class="login">
+              <h1>About <%=shopName%></h1>
+              <p>We sell all sorts of books and nothing else!</p>
+
+              <h1>Search for the wether in your city</h1>
+              <form action="/weather" method="post">
+                <p>What is the name of the city would like to search for</p>
+                <!-- Form for the weather -->
+                <input id="city" type="text" name="city" value="" />
+                <input type="submit" value="Search" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

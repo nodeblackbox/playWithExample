@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About <%=shopName%></title>
+    <!-- <link rel="stylesheet"  type="text/css" href="main.css" /> -->
+    <link rel="stylesheet" type="text/css" href="form.css" />
+    <style>
+      html {
+        cursor: url("images/cursor.png"), auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fade-in">
+      <!-- ----------------------nav section----------------------- -->
+
+      <div class="navbar">
+        <div class="navBtnHolder">
+          <a
+            onclick="location.href='./about'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            about
+          </a>
+          <a
+            onclick="location.href='./addbook'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            addbook
+          </a>
+          <a
+            onclick="location.href='./bargainbooks'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            bargains
+          </a>
+          <a
+            onclick="location.href='./deleteusers'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            deleteusers
+          </a>
+          <a
+            onclick="location.href='./'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            home
+          </a>
+          <a
+            onclick="location.href='./list'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            list
+          </a>
+          <a
+            onclick="location.href='./register'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            register
+          </a>
+          <a
+            onclick="location.href='./search'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            search
+          </a>
+          <a
+            onclick="location.href='./logIn'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            logIn
+          </a>
+          <a
+            onclick="location.href='./tvshows'"
+            type="button"
+            class="homeBtn homeFLeft"
+          >
+            tvshows
+          </a>
+          <!-- </div> -->
+        </div>
+      </div>
+
+      <div class="login">
+        <div id="formDiv">
+          <div class="spacerContainer">
+            <div class="login">
+              <h1>About <%=shopName%></h1>
+              <!-- div2 has a width of 300px, a height of 100px, a padding of 50px, and a red border -->
+            <div class="div2" style="width: 800px; height: 100px; padding: 50px;">
+            
+           <!-- We hope you're enjoying browsing your favourite TV shows -->
+            <p>We hope you're enjoying browsing your favourite TV shows</p>
+
+                <!-- Create a div container for the table to enable scrolling -->
+                <div style="overflow: scroll;">
+                <!-- Create a table to display the TV show information -->
+                <table>
+                    <!-- Use a for loop to iterate over the array of show information -->
+                    <% for(let i = 0; i<showsInfo.length; i++) { %>
+
+                    <!-- For each show, create a new row in the table -->
+                    <tr>
+                        <!-- Add a cell with the name of the show -->
+                        <td>Name of the show: <%=showsInfo[i].show.name%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with the type of the show -->
+                        <td>Type of show: <%=showsInfo[i].show.type%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with the genre of the show -->
+                        <td>Genre of the show: <%=showsInfo[i].show.genres%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with the premiered date of the show -->
+                        <td>Premiered: <%=showsInfo[i].show.premiered%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with the language of the show -->
+                        <td>Language: <%=showsInfo[i].show.language%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with the status of the show -->
+                        <td>Status: <%=showsInfo[i].show.status%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with the rating of the show -->
+                        <td>School rating: <%=showsInfo[i].score%></td>
+                    </tr>
+                    <tr>
+                        <!-- Add a cell with a link to the URL of the show -->
+                        <td>Visit URL: <a href="<%=showsInfo[i].show.url%>" target="_blank"><%=showsInfo[i].show.url%></a></td>
+                    </tr>
+                    
+                    <% } %>
+                </table>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
