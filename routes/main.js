@@ -397,6 +397,7 @@ module.exports = function (app, shopData) {
     //     res.send(wmsg);
     //   }
     // });
+   
     request(url, function (err, response, body) {
       if (err) {
         console.log("error:", error);
