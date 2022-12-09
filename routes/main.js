@@ -29,6 +29,7 @@ module.exports = function (app, shopData) {
       }
     }
   };
+
   //@@@@@@@@@@@@@------TODO
   //-----------------------------------------------//
   //-----------------------------------------------//
@@ -49,57 +50,6 @@ module.exports = function (app, shopData) {
   }
 
   //@@@@@@@@@@@@@------TODO
-  //-----------------------------------------------//
-  //-----------------------------------------------//
-
-  // app.get("/testPage", function (req, res) {
-  //   res.render("testPage.ejs", shopData);
-  // });
-  // app.get("/testPage", redirectLogin, function (req, res) {
-  //   const errors = validationResult(req);
-  //   console.log(errors);
-  //   if (!errors.isEmpty()) {
-  //     let msg = "";
-  //     for (var i = 0; i < errors.array().length; i++) {
-  //       msg += errors.array()[i].msg + "\\n";
-  //       // errors[i]
-  //     }
-  //     //add check on all
-  //     console.log(msg);
-  //     res.send(alert(msg, "testPage"));
-  //     // res.redirect("./register");
-  //   } else {
-  //     let sqlquery = "SELECT * FROM books"; // query database to get all the books
-  //     // execute sql query
-  //     db.query(sqlquery, (err, result) => {
-  //       if (err) {
-  //         res.redirect("./");
-  //       }
-  //       //Converting out put from database to an object to be passed to delete user page
-  //       let newData = Object.assign({}, shopData, { availableBooks: result });
-  //       console.log(newData);
-  //       res.render("testPage.ejs", newData);
-  //     });
-  //   }
-  // });
-  //----------------------------------------------------------
-  // app.get("/api", (req, res) => {
-  //   //Select all the books from the database
-  //   let sqlQuery = "SELECT * FROM books";
-  //   if (req.query.keyword) {
-  //     //Select specific books from the database
-  //     sqlQuery =
-  //       "SELECT * FROM books WHERE name LIKE '%" + req.query.keyword + "%'";
-  //   }
-  //   db.query(sqlQuery, (err, result) => {
-  //     if (err) {
-  //       res.redirect("./");
-  //     } else {
-  //       // Return results as a JSON object
-  //       res.json(result);
-  //     }
-  //   });
-  // });
 
   app.get("/api", (req, res) => {
     // Select all the books from the database
@@ -124,11 +74,6 @@ module.exports = function (app, shopData) {
       }
     });
   });
-
-  // app.get("/testPage", function (req, res) {
-  //   // Handle a GET request to the /testPage route by rendering the testPage.ejs view with the shopData object.
-  //   res.render("testPage.ejs", shopData);
-  // });
 
   app.get("/testPage", function (req, res) {
     let sqlquery = "SELECT * FROM books"; // query database to get all the books
@@ -199,19 +144,6 @@ module.exports = function (app, shopData) {
     }
   });
 
-  // app.get("/list", function (req, res) {
-  //   let sqlquery = "SELECT * FROM books"; // query database to get all the books
-  //   // execute sql query
-  //   db.query(sqlquery, (err, result) => {
-  //     if (err) {
-  //       res.redirect("./");
-  //     }
-  //     //Converting out put from database to an object to be passed to delete user page
-  //     let newData = Object.assign({}, shopData, { availableBooks: result });
-  //     console.log(newData);
-  //     res.render("list.ejs", newData);
-  //   });
-  // });
   //@@@@@@@@@@@@@------TODO
   //-----------------------------------------------//
   //-----------------------------------------------//
@@ -229,36 +161,6 @@ module.exports = function (app, shopData) {
   app.get("/about", function (req, res) {
     res.render("about.ejs", shopData);
   });
-
-  // {
-  // "coord":{"lon":-0.1257,
-  // "lat":51.5085},
-  // "weather":[{"id":800,
-  // "main":"Clear",
-  // "description":"clear sky",
-  // "icon":"01n"}],
-  // "base":"stations",
-  // "main":{"temp":272.07,
-  // "feels_like":270.32,
-  // "temp_min":269.61,
-  // "temp_max":273.76,
-  // "pressure":1008,
-  // "humidity":88},
-  // "visibility":10000,
-  // "wind":{"speed":1.41,
-  // "deg":341,
-  // "gust":4.31},
-  // "clouds":{"all":0},
-  // "dt":1670528347,
-  // "sys":{"type":2,
-  // "id":2075535,
-  // "country":"GB",
-  // "sunrise":1670485966,
-  // "sunset":1670514733},
-  // "timezone":0,
-  // "id":2643743,
-  // "name":"London",
-  // "cod":200}
 
   app.post(
     "/form",
@@ -379,25 +281,7 @@ module.exports = function (app, shopData) {
     let apiKey = WetherAPIkey;
     let city = "london";
     let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-    // let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid="9178bad303b5ef2a28bc2dc7f2abf64a"`;
 
-    // request(url, function (err, response, body) {
-    //   if (err) {
-    //     console.log("error:", error);
-    //   } else {
-    //     // res.send(body);
-    //     var weather = JSON.parse(body);
-    //     var wmsg = ""
-    //       "It is " +
-    //       weather.main.temp +
-    //       " degrees in " +
-    //       weather.name +
-    //       "! <br> The humidity now is: " +
-    //       weather.main.humidity;
-    //     res.send(wmsg);
-    //   }
-    // });
-   
     request(url, function (err, response, body) {
       if (err) {
         console.log("error:", error);
@@ -444,127 +328,6 @@ module.exports = function (app, shopData) {
   });
   //------------------------------------------------
   //------------------------------------------------
-
-  // app.post(
-  //   "/registered",
-  //   [check("email").isEmail().withMessage("You must type a valid email")],
-  //   [
-  //     check("password")
-  //       .isLength({ min: 8 })
-  //       .withMessage("password is not long enough"),
-  //   ],
-  //   [
-  //     check("username")
-  //       .isLength({ min: 6 })
-  //       .withMessage("username is too short"),
-  //   ],
-  //   [
-  //     check("first")
-  //       .isLength({ min: 2 })
-  //       .withMessage("first name is too short"),
-  //   ],
-  //   [check("last").isLength({ min: 2 }).withMessage("last name is too short")],
-  //   function (req, res) {
-  //     const errors = validationResult(req);
-  //     if (!errors.isEmpty()) {
-  //       let msg = "";
-  //       for (var i = 0; i < errors.array().length; i++) {
-  //         msg += errors.array()[i].msg + "\\n";
-  //       }
-  //       //add check on all
-  //       console.log(msg);
-  //       res.send(alert(msg, "register"));
-  //       // res.redirect("./register");
-  //     } else {
-  //       if (!errors.isEmpty()) {
-  //         res.redirect("./register");
-  //       } else {
-  //         // REST OF YOUR CODE
-  //         const saltRounds = 10;
-  //         const plainPassword = req.body.password;
-  //         const hashedPassword = "";
-
-  //         console.log(req.body.username);
-  //         console.log(req.body.first);
-  //         console.log(req.body.last);
-  //         console.log(req.body.email);
-  //         console.log(req.body.password);
-
-  //         // ---------------------------------------------------------------------------------
-  //         // ---------------------------------------------------------------------------------
-  //         // Hashing the password and adding 10 salt rounds
-  //         bcrypt.hash(
-  //           plainPassword,
-  //           saltRounds,
-  //           function (err, hashedPassword) {
-  //             if (err) {
-  //               res.redirect("./");
-  //             } else {
-  //               let params = [
-  //                 db.escape(req.sanitize(req.body.username)),
-  //                 db.escape(req.sanitize(req.body.first)),
-  //                 db.escape(req.sanitize(req.body.last)),
-  //                 db.escape(req.sanitize(req.body.email)),
-  //                 db.escape(req.sanitize(hashedPassword)),
-  //               ];
-
-  //               let sqlCreate =
-  //                 "insert into users (username,firstname,lastname,email,hashedPassword) values (?,?,?,?,?)";
-  //               // Store hash in your password DB.
-  //               // Query all the necessary information to store data into the database
-  //               // let sqlCreate =
-  //               //   "insert into users (username,firstname,lastname,email,hashedPassword) values ('" +
-  //               //   req.sanitize(req.body.username) +
-  //               //   "' , '" +
-  //               //   req.sanitize(req.body.first) +
-  //               //   "' , '" +
-  //               //   req.sanitize(req.body.last) +
-  //               //   "' , '" +
-  //               //   req.sanitize(req.body.email) +
-  //               //   "' , '" +
-  //               //   req.sanitize(hashedPassword) +
-  //               //   "')";
-
-  //               // execute sql query
-  //               db.query(sqlCreate, params, (err, result) => {
-  //                 if (!errors.isEmpty()) {
-  //                   let msg = "";
-  //                   for (var i = 0; i < errors.array().length; i++) {
-  //                     msg += errors.array()[i].msg + "\\n";
-  //                   }
-  //                   //add check on all
-  //                   console.log(msg);
-  //                   res.send(alert(msg, "register"));
-  //                   // res.redirect("./register");
-  //                 } else {
-  //                   if (err) {
-  //                     // alert("error mysql");
-  //                     res.redirect("./");
-  //                   }
-
-  //                   //---------------------------------------------------
-  //                   //---------------------------------------------------
-  //                   //---------------------------------------------------
-  //                   //---------------------------------------------------
-
-  //                   // console.log()
-  //                   // result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered! We will send an email to you at ' + req.body.email;
-  //                   // Sending success message to user
-  //                   result +=
-  //                     "Your password is: " +
-  //                     req.sanitize(req.body.password) +
-  //                     " and your hashed password is: " +
-  //                     req.sanitize(hashedPassword);
-  //                   res.send(result);
-  //                 }
-  //               });
-  //             }
-  //           }
-  //         );
-  //       }
-  //     }
-  //   }
-  // );
 
   // Handle a GET request to the /register route by rendering the register.ejs view with the shopData object.
   app.get("/register", function (req, res) {
@@ -659,12 +422,6 @@ module.exports = function (app, shopData) {
       }
     }
   );
-
-  //---------------------------------------------------
-
-  //@@@@@@@@@@@@@------TODO
-  //-----------------------------------------------//
-  //-----------------------------------------------//
 
   //@@@@@@@@@@@@@------TODO
   //-----------------------------------------------//
