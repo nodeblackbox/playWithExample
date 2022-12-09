@@ -33,19 +33,22 @@ module.exports = function (app, shopData) {
   //@@@@@@@@@@@@@------TODO
   //-----------------------------------------------//
   //-----------------------------------------------//
-
+  // The alert function takes two arguments: msg is a string containing the message to be displayed
+  // to the user, and url is the URL that the user should be redirected to after a delay of 5 seconds.
+  //  The function creates an alert message using the provided msg and url parameters,
+  //  and then returns the resulting message.
   function alert(msg, url) {
-    // Display an alert message to the user and redirect them to a new URL after a delay of 5 seconds.
+    // Create the alert message using the provided parameters.
     let alert =
       "<script>" +
       "alert('" +
       msg +
       "'); " +
-      message +
       "setTimeout('', 5000); " + // Delay for 5 seconds.
       "window.location.href = '/" +
       url +
       "';</script>"; // Local developerment.
+
     return alert; // Return the alert message.
   }
 
@@ -78,6 +81,18 @@ module.exports = function (app, shopData) {
   app.get("/testPage", function (req, res) {
     let sqlquery = "SELECT * FROM books"; // query database to get all the books
     // execute sql query
+
+    if (req.query.keyword) {
+      // Sanitize the keyword input
+      const keyword_Sanitize = sanitizeHtml(req.query.keyword);
+      // Escape any HTML special characters in the keyword input
+      const keyword_XSS_provention = escapeHtml(keyword_Sanitize);
+      // Select specific books from the database
+      sqlquery =
+        "SELECT * FROM books WHERE name LIKE '%" +
+        keyword_XSS_provention +
+        "%'";
+    }
     db.query(sqlquery, (err, result) => {
       if (err) {
         res.redirect("./");
@@ -507,6 +522,7 @@ module.exports = function (app, shopData) {
       // SQL query for the hash password
       let sql_q =
         "SELECT hashedpassword FROM users WHERE username = values (?)";
+
       // SQL for the stage 1 sanitisation To check if the username is inside the database
       let params2 = [db.escape(req.sanitize(req.body.password))];
       let sql_sanatise = "SELECT username FROM users WHERE username = (?)";
@@ -663,7 +679,21 @@ module.exports = function (app, shopData) {
 
       var mysql = require("mysql");
       // SQL query for the hash password
-      let sqlquery = "SELECT * FROM users";
+
+      let sqlquery = "SELECT * FROM books"; // query database to get all the books
+      // execute sql query
+
+      if (req.query.keyword) {
+        // Sanitize the keyword input
+        const keyword_Sanitize = sanitizeHtml(req.query.keyword);
+        // Escape any HTML special characters in the keyword input
+        const keyword_XSS_provention = escapeHtml(keyword_Sanitize);
+        // Select specific books from the database
+        sqlquery =
+          "SELECT * FROM books WHERE name LIKE '%" +
+          keyword_XSS_provention +
+          "%'";
+      }
 
       // let store_user = [req.body.username];
       let store_user = req.body.username;
