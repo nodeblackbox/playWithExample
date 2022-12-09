@@ -286,45 +286,69 @@ module.exports = function (app, shopData) {
     }
   });
 
+
   app.get("/weatherApp", function (req, res) {
     res.render("weatherApp.ejs", shopData);
   });
 
   app.post("/weather", function (req, res) {
-    const request = require("request");
+   // Import the request library
+const request = require("request");
 
-    let apiKey = WetherAPIkey;
-    let city = "london";
-    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+// Define the weather API key
+let apiKey = WetherAPIkey;
 
+// Set the default city to London
+let city = "london";
+
+// Set up the URL for the weather API request
+let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+// Listen for a GET request on the /weatherApp path
+app.get("/weatherApp", function (req, res) {
+    // When a request is received, render the weatherApp.ejs view
+    // with the shopData object
+    res.render("weatherApp.ejs", shopData);
+});
+
+// Listen for a POST request on the /weather path
+app.post("/weather", function (req, res) {
+    // Use the request library to make an HTTP request to the OpenWeatherMap API
     request(url, function (err, response, body) {
-      if (err) {
-        console.log("error:", error);
-      } else {
-        var weather = JSON.parse(body);
-        if (weather !== undefined && weather.main !== undefined) {
-          var weather = JSON.parse(body);
-          var wmsg =
-            "It is " +
-            weather.main.temp +
-            " degrees in " +
-            weather.name +
-            "! <br> The humidity now is: " +
-            weather.main.humidity +
-            "! <br> The maximum temperature will be: " +
-            weather.main.temp_max +
-            "! <br> By the minimum temperature will be: " +
-            weather.main.temp_min +
-            "! <br> The pressure will be: " +
-            weather.main.pressure +
-            "! <br> By the wind speed will be: " +
-            weather.wind.speed +
-            "<br> <a href='/'><button type=" +
-            '"button"' +
-            ">Go to Home Page</button></a>" +
-            " " +
-            '<select> <option value="Manchester">Manchester</option> ' +
-            ' <option value="London">London</option> </select>';
+        // If there is an error, log it to the console
+        if (err) {
+            console.log("error:", error);
+        } else {
+            // If there is no error, parse the JSON response body
+            var weather = JSON.parse(body);
+
+            // If the weather data is not undefined and the "main" property is not undefined
+            if (weather !== undefined && weather.main !== undefined) {
+                // Parse the JSON response body
+                var weather = JSON.parse(body);
+
+                // Format the weather data into a message
+                var wmsg =
+                    "It is " +
+                    weather.main.temp +
+                    " degrees in " +
+                    weather.name +
+                    "! <br> The humidity now is: " +
+                    weather.main.humidity +
+                    "! <br> The maximum temperature will be: " +
+                    weather.main.temp_max +
+                    "! <br> By the minimum temperature will be: " +
+                    weather.main.temp_min +
+                    "! <br> The pressure will be: " +
+                    weather.main.pressure +
+                    "! <br> By the wind speed will be: " +
+                    weather.wind.speed +
+                    "<br> <a href='/'><button type=" +
+                    '"button"' +
+                    ">Go to Home Page</button></a>" +
+                    " " +
+                    '<select> <option value="Manchester">Manchester</option> ' +
+                    ' <option value="London">London</option> </select>';
           res.send(wmsg);
         } else {
           res.send("No data found");
